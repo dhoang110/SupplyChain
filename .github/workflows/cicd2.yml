@@ -1,7 +1,7 @@
 name: Supply Chain CI
 on: 
     push:
-        branches: [dhoang110-patch-1]
+        branches: [dh-cicd]
 jobs:
     build-container:
         runs-on: ubuntu-latest
@@ -17,15 +17,33 @@ jobs:
                 docker build -f dockerfile05 . -t dhoang110/sentiment
                 docker build -f dockerfile06 . -t dhoang110/dashboard
                 sleep 20s
+                docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASS }} 
+                docker push dhoang110/webscraping01:latest
+                docker push dhoang110/webscraping02:latest
+                docker push dhoang110/transformation:latest
+                docker push dhoang110/esconnect:latest
+                docker push dhoang110/sentiment:latest
+                docker push dhoang110/dashboard:latest
+
     deploy:
-        needs: build-container
-        name: deploy
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: display dashboard on Dash
-              run: |
-                cd Application/
-                docker-compose up -d
-                sleep 120
-                curl localhost:8050
+      needs: build-container
+      name: deploy
+      runs-on: ubuntu-latest
+      steps:
+        - name: display dashboard
+          uses: appleboy/ssh-action@master
+          with:
+            host: 
+            username: 
+            key: 
+            port: 22
+            script: |
+              sudo yum update -y
+              sudo yum install docker
+              sudo service docker start
+              sudo systemctl enable docker.service
+              sudo systemctl status docker.service
+              sleep 10
+              docker-compose up -d
+              sleep 80 
+              curl localhost:8050
