@@ -46,4 +46,5 @@ jobs:
               sleep 10
               docker-compose up -d
               sleep 80 
+              sudo docker run -d -p 8050:8050 --name dhoang110/dashboard:latest
               curl localhost:8050
