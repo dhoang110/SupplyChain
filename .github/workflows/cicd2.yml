@@ -38,7 +38,6 @@ jobs:
             key: ${{ secrets.AWS_KEY }}
             port: 22
             script: |
-              cd Application/
               docker-compose up -d
               sleep 80 
               curl localhost:8050
