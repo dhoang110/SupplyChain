@@ -24,6 +24,8 @@ jobs:
               docker push dhoang110/esconnect:latest
               docker push dhoang110/sentiment:latest
               docker push dhoang110/dashboard:latest
+              docker-compose up -d
+              sleep 80 
 
     deploy:
       needs: build-container
@@ -38,6 +40,5 @@ jobs:
             key: ${{ secrets.AWS_KEY }}
             port: 22
             script: |
-              docker-compose up -d
-              sleep 80 
+              
               curl localhost:8050
