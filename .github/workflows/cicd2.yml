@@ -24,14 +24,14 @@ jobs:
               docker push dhoang110/esconnect:latest
               docker push dhoang110/sentiment:latest
               docker push dhoang110/dashboard:latest
-              docker-compose up -d
-              sleep 80 
 
     deploy:
       needs: build-container
       name: Deploy
       runs-on: ubuntu-latest
       steps:
+        - name: Checkout source code
+          uses: actions/checkout@v3
         - name: executing remote ssh commands and display dashboard
           uses: appleboy/ssh-action@master
           with:
@@ -40,8 +40,8 @@ jobs:
             key: ${{ secrets.AWS_KEY }}
             port: 22
             script: |
-              cd Application/
-              docker-compose down
-              docker-compose up -d
-              sleep 120
-              curl localhost:8050
+                cd Application/
+                docker-compose down
+                docker-compose up -d
+                sleep 120
+                curl localhost:8050
