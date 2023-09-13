@@ -40,6 +40,9 @@ jobs:
             key: ${{ secrets.AWS_KEY }}
             port: 22
             script: |
+                sudo yum install git -y
+                git clone https://github.com/dhoang110/SupplyChain.git
+                cd SupplyChain/
                 cd Application/
                 docker-compose down
                 docker-compose up -d
