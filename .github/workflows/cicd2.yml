@@ -44,7 +44,7 @@ jobs:
                 git clone https://github.com/dhoang110/SupplyChain.git
                 cd SupplyChain/
                 cd Application/
-                docker-compose down
-                docker-compose up -d
+                sudo docker-compose down
+                sudo docker-compose up -d
                 sleep 120
-                curl localhost:8050
+                sudo curl localhost:8050
