@@ -48,4 +48,4 @@ Cron job:
   - edit crontab with crontab -e
   - type in the file:
 0 0 * sep mon ~/SupplyChain/CMD.sh
-  - then exit the crontab
+  - then exit the crontab ...
