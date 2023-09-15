@@ -45,7 +45,7 @@ The back-end of the app works in several steps. Those steps are marked from 01 -
     - vertical bar chart showing the distribution of sentiment labels per topic of the reviews 
   
 Cron job: 
-edit crontab with crontab -e
-type in the file:
+  - edit crontab with crontab -e
+  - type in the file:
 0 0 * sep mon ~/SupplyChain/CMD.sh
-then exit the crontab
+  - then exit the crontab ...

@@ -1,31 +1,50 @@
 name: Supply Chain CI
 on: 
     push:
-        branches: [dhoang110-patch-1]
+      branches: [dh-cicd]
 jobs:
     build-container:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Build the Docker images
-              run: |
-                cd Application/
-                docker build -f dockerfile01 . -t dhoang110/webscraping01
-                docker build -f dockerfile02 . -t dhoang110/webscraping02
-                docker build -f dockerfile03 . -t dhoang110/transformation
-                docker build -f dockerfile04 . -t dhoang110/esconnect
-                docker build -f dockerfile05 . -t dhoang110/sentiment
-                docker build -f dockerfile06 . -t dhoang110/dashboard
-                sleep 20s
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - name: Build the Docker images
+          run: |
+              cd Application/
+              docker build -f dockerfile01 . -t dhoang110/webscraping01
+              docker build -f dockerfile02 . -t dhoang110/webscraping02
+              docker build -f dockerfile03 . -t dhoang110/transformation
+              docker build -f dockerfile04 . -t dhoang110/esconnect
+              docker build -f dockerfile05 . -t dhoang110/sentiment
+              docker build -f dockerfile06 . -t dhoang110/dashboard
+              sleep 20s
+              docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASS }} 
+              docker push dhoang110/webscraping01:latest
+              docker push dhoang110/webscraping02:latest
+              docker push dhoang110/transformation:latest
+              docker push dhoang110/esconnect:latest
+              docker push dhoang110/sentiment:latest
+              docker push dhoang110/dashboard:latest
+
     deploy:
-        needs: build-container
-        name: deploy
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: display dashboard on Dash
-              run: |
+      needs: build-container
+      name: Deploy
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout source code
+          uses: actions/checkout@v3
+        - name: executing remote ssh commands and display dashboard
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.HOSTNAME }}
+            username: ${{ secrets.AWS_USERNAME }}
+            key: ${{ secrets.AWS_KEY }}
+            port: 22
+            script: |
+                sudo yum install git -y
+                git clone https://github.com/dhoang110/SupplyChain.git
+                cd SupplyChain/
                 cd Application/
-                docker-compose up -d
+                sudo docker-compose down
+                sudo docker-compose up -d
                 sleep 120
-                curl localhost:8050
+                sudo curl localhost:8050
