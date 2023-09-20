@@ -12,16 +12,11 @@ The back-end of the app works in several steps. Those steps are marked from 01 -
   - 02-subpage.py runs through the subpages of the list of companies and extracts all the review details per company in a reviews.csv file. The file contains the following data per company: company_name, review_star, review_title, reviewer_name, review_text,experience_date, review_date, reply_date, reply_text.
 
 ### Step 3: Organising data in a single file
-  - 03-transformation.py python script reads the output from web scrapping (atm.csv, reviews.csv) and joins relevant data into a single output app_reviews.csv with columns company_name, review_star, review_title, reviewer_name, review_text, experience_date, review_date, reply_date, reply_text
+  - 03-transformation.py python script reads the output from web scrapping (atm.csv, reviews.csv) and joins relevant data into a single output app_reviews.csv with columns review_id, company_id, company_name, review_text
 
 ### Step 4: Upload data to Elasticsearch
-  - 04-esconnect.py connects to elasticsearch previously set up using docker-compose file (services: setup, es01, es02, es03, kibana)
-  - To run the script locally you must first 
-    - run "docker-compose up - d setup, es01, es02, es03, kibana"
-    - access kibana from Docker or from any browser: http://localhost:5601
-    - once in kibana User: elastic, Password: datascientest
-    - create an Index name "atm_reviews"
-    - run the 04-esconnect.py file to import the CSV data into Elasticsearch
+  - 04-esconnect.py connects to elasticsearch previously set up using docker-compose file (services: setup, es01, es02, es03, kibana) and upload the app_reviews.csv into the index name "bestatm_review"
+  - You can access kibana from Docker or from any browser: http://localhost:5601
   - The step is automated in docker-compose.yml file under service import_to_elasticsearch, where all the dependencies are specified
 
 ### Step 5: Sentiment analysis
