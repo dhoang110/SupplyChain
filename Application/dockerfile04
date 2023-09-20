@@ -8,4 +8,6 @@ COPY . /app/
 
 WORKDIR /app
 
-CMD ["python", "04-esconnect.py"]
+EXPOSE 5601
+
+CMD ["python", "04-esconnect.py", "--host", "0.0.0.0", "--port", "5601"]
