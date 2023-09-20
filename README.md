@@ -44,8 +44,3 @@ The back-end of the app works in several steps. Those steps are marked from 01 -
     - horisontal bar chart showing the count of reviews and sentiment labels per word bucket (supply chain step) 
     - vertical bar chart showing the distribution of sentiment labels per topic of the reviews 
   
-Cron job: 
-  - edit crontab with crontab -e
-  - type in the file:
-0 0 * sep mon ~/SupplyChain/CMD.sh
-  - then exit the crontab ...
