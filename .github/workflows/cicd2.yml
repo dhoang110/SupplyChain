@@ -1,7 +1,7 @@
 name: Supply Chain CI
 on: 
     push:
-      branches: [dh-cicd]
+      branches: [main]
 jobs:
     build-container:
       runs-on: ubuntu-latest
